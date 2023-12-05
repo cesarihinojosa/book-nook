@@ -3,5 +3,27 @@
 {% block title %}Login{% endblock %} 
 
 {%block content %}
-<h1>Login</h1>
+<form method="POST">
+    <h3 align="center">Login</h3>
+    <div class="form-group">
+        <label for="username">username</label>
+        <input 
+            type="text" 
+            class="form-control" 
+            id="username" 
+            name="username" 
+            placeholder="peterparker2002">
+    </div>
+    <div class="form-group">
+        <label for="password">password</label>
+        <input 
+            type="password" 
+            class="form-control" 
+            id="password" 
+            name="password" 
+            placeholder="Fr3inDlyN3iborh0od5piderm@n">
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
 {% endblock %}
