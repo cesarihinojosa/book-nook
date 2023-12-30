@@ -27,8 +27,8 @@
     <ul class="list-group list-group-flush" id="search_results">
         {% for book in books %}
         <div class="mt-3 mb-3 border border-primary rounded">
-            <div class="d-inline mr-5"><img src="{{book.volumeInfo.imageLinks.thumbnail}}" class="rounded" alt=""></div>
-            <div class="d-inline mr-5">{{book.volumeInfo.title}} by {{book.volumeInfo.authors.0}}</div>
+            <div class="d-inline mr-5"><img src="{{ book.imageLinks.thumbnail }}" class="rounded" alt=""></div>
+            <div class="d-inline mr-5">{{book.title}} by {{book.authors.0}}</div>
         </div>
         {% endfor %}
     </ul>
