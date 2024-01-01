@@ -6,7 +6,7 @@ add = Blueprint('add', __name__)
 
 @add.route('/add', methods=['GET', 'POST'])
 @login_required
-def add_book():
+def search_books():
     books = ''
     if request.method == 'POST':
         query = request.form.get('query')

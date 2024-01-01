@@ -2,6 +2,14 @@
 
 {% block title %}Home{% endblock %} 
 
+{% block style %}
+  <style>
+    body{
+      font-family: 'Quicksand', sans-serif;
+    }
+  </style>
+{% endblock %} 
+
 {%block content %}
 <h1>hello, {{user.username}}</h1>
 {% endblock %}
