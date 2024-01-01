@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, request, url_for
+from flask import Blueprint, render_template, request, url_for, flash
 from flask_login import login_required, current_user
 import requests
+import json
 
 add = Blueprint('add', __name__)
 
@@ -10,10 +11,16 @@ def search_books():
     books = ''
     if request.method == 'POST':
         query = request.form.get('query')
-        response_data = search(query)
-        books = initialize_book_list(10)
-        books = assign_values_to_books(books, response_data)
-    return render_template("add.html", books=books)
+        if query:
+            response_data = search(query)
+            books = initialize_book_list(10)
+            books = assign_values_to_books(books, response_data)
+            return render_template("add.html", books=books)
+        else:
+            pass
+    else:
+        pass
+    return render_template("add.html")
 
 def search(query):
     url = f'https://www.googleapis.com/books/v1/volumes?q={query}'
@@ -52,3 +59,8 @@ def if_this_in_that(this, that, default):
         return that[this]
     else:
         return default
+    
+@add.route('/add-book', methods=['POST'])
+def add_book():
+    print("inside /add-book!!")
+    
