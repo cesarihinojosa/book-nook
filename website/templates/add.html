@@ -10,7 +10,7 @@
 
 {%block content %}
 <div class="row d-flex justify-content-center mt-5">
-    <form method="POST" class="form-inline ">
+    <form name="search" method="POST" class="form-inline ">
         <div class="form-group mx-sm-3 mb-2">
         <label class="sr-only"></label>
         <input 
@@ -27,7 +27,14 @@
     <ul class="list-group list-group-flush" id="search_results">
         {% for book in books %}
         <div class="mt-3 mb-3 border border-primary rounded">
-            <div class="d-inline mr-5"><img src="{{ book.imageLinks.thumbnail }}" class="rounded" alt=""></div>
+            <div class="d-inline mr-5">
+              <img 
+                src="{{ book.imageLinks.thumbnail }}" 
+                class="img-fluid rounded"
+                style="max-width: 128px; max-height: 196px;" 
+                alt=""
+              >
+            </div>
             <div class="d-inline mr-5">{{book.title}} by {{book.authors.0}}</div>
         </div>
         {% endfor %}

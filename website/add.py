@@ -39,6 +39,7 @@ def assign_values_to_books(books, response_data):
             if "imageLinks" in response_data["items"][i]["volumeInfo"]:
                 books[i]["imageLinks"]["smallThumbnail"] = if_this_in_that("smallThumbnail", response_data["items"][i]["volumeInfo"]["imageLinks"], books[i]["imageLinks"]["smallThumbnail"])
                 books[i]["imageLinks"]["thumbnail"] = if_this_in_that("thumbnail", response_data["items"][i]["volumeInfo"]["imageLinks"], books[i]["imageLinks"]["thumbnail"])
+                books[i]["imageLinks"]["thumbnail"] += "&fife=w480-h690" #allows picture to be clear
             else:
                 pass
         else:
