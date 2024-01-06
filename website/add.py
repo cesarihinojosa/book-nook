@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, url_for, flash
+from flask import Blueprint, render_template, request, url_for, flash, jsonify
 from flask_login import login_required, current_user
+from .models import User, Book
 import requests
 import json
 
@@ -30,7 +31,16 @@ def search(query):
 def initialize_book_list(size):
     books= []
     for i in range(size):
-        books.append({"title": "title unavailable", "authors": "authors unavailable", "description": "description unavailable", "pageCount": 0, "imageLinks": {"smallThumbnail": url_for('static', filename='images/no-image.jpg'), "thumbnail": url_for('static', filename='images/no-image.jpg')}})
+        books.append({"title": "title unavailable", 
+                      "subtitle": "subtitle unavailable" ,
+                      "authors": "authors unavailable", 
+                      "category": "category unavailable", 
+                      "pageCount": 0, 
+                      "imageLinks": {
+                          "smallThumbnail": url_for('static', filename='images/no-image.jpg'), 
+                          "thumbnail": url_for('static', filename='images/no-image.jpg')
+                          }
+                    })
     return books
 
 def assign_values_to_books(books, response_data):
@@ -39,8 +49,9 @@ def assign_values_to_books(books, response_data):
     
         if "volumeInfo" in response_data["items"][i]:
             books[i]["title"] = if_this_in_that("title", response_data["items"][i]["volumeInfo"], books[i]["title"])
+            books[i]["subtitle"] = if_this_in_that("subtitle", response_data["items"][i]["volumeInfo"], books[i]["subtitle"])
             books[i]["authors"] = if_this_in_that("authors", response_data["items"][i]["volumeInfo"], books[i]["authors"])
-            books[i]["description"] = if_this_in_that("description", response_data["items"][i]["volumeInfo"], books[i]["description"])
+            books[i]["category"] = if_this_in_that("categories", response_data["items"][i]["volumeInfo"], books[i]["category"])
             books[i]["pageCount"] = if_this_in_that("pageCount", response_data["items"][i]["volumeInfo"], books[i]["pageCount"])
 
             if "imageLinks" in response_data["items"][i]["volumeInfo"]:
@@ -61,6 +72,10 @@ def if_this_in_that(this, that, default):
         return default
     
 @add.route('/add-book', methods=['POST'])
+@login_required
 def add_book():
-    print("inside /add-book!!")
+    data = json.loads(request.data)
+    print(data["book"]["authors"])
+    #book = Book(data["book"]["title"], data["book"][""])
+    return jsonify({})
     
