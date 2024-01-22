@@ -15,6 +15,14 @@ class Book(db.Model):
     page_count = db.Column(db.Integer)
     cover = db.Column(db.String(500))
 
+    def __init__(self, title, subtitle, author, category, page_count, cover):
+        self.title = title
+        self.subtitle = subtitle
+        self.author = author
+        self.category = category
+        self.page_count = page_count
+        self.cover = cover
+        
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), unique=True)
