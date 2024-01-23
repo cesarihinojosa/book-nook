@@ -4,9 +4,10 @@ from .models import User, Book
 from . import db
 import requests
 import json
+from pprint import pprint
 
 add = Blueprint('add', __name__)
-RESPONSE_DATA = []
+RESPONSE_DATA_CACHE = None
 
 @add.route('/add', methods=['GET', 'POST'])
 @login_required
@@ -17,15 +18,12 @@ def search_add():
 @login_required
 def add_book():
     book_id = request.form.get('id')
-    book = get_book_from_id(book_id)
-    print(book_id)
-    print(book)
+    book = get_book_from_cache(book_id)
     return render_template("add.html")
 
-def get_book_from_id(id):
-    for i in range(0, len(RESPONSE_DATA)):
-        if id == RESPONSE_DATA['items'][i]['id']:
-            return RESPONSE_DATA['items'][i]
+def get_book_from_cache(id):
+    for book in reversed(RESPONSE_DATA_CACHE):
+        print(book['volumeInfo']['title'])
     return []
 
 @add.route('/handle_search', methods=['POST'])
@@ -33,13 +31,22 @@ def get_book_from_id(id):
 def handle_search():
     query = request.form.get('query')
     if query:
-        global RESPONSE_DATA
-        RESPONSE_DATA = search(query)
-        filtered_data = filter_data(RESPONSE_DATA)
+        data = search(query)
+        cache_data(data)
+        filtered_data = filter_data(data)
         return render_template("add.html", books=filtered_data)
     else:
         return render_template("add.html")
     
+def cache_data(data):
+    global RESPONSE_DATA_CACHE
+    if RESPONSE_DATA_CACHE is None:
+        RESPONSE_DATA_CACHE = data["items"]
+    else:
+        RESPONSE_DATA_CACHE += data["items"]
+        if len(RESPONSE_DATA_CACHE) > 100:
+            del RESPONSE_DATA_CACHE[:10] 
+
 def filter_data(data):
     filtered_data = initialize_default_list(data)
     filtered_data = assign_values(data, filtered_data)
